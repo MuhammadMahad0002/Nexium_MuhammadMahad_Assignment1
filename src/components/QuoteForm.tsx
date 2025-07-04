@@ -1,17 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const quotesData: Record<string, string[]> = {
   life: [
     "Life is 10% what happens to us and 90% how we react to it.",
     "The purpose of life is not to be happy. It is to be useful.",
     "Get busy living or get busy dying.",
-  ],success: [
+  ],
+  success: [
     "Success usually comes to those who are too busy to be looking for it.",
     "Don’t be afraid to give up the good to go for the great.",
     "Success is not in what you have, but who you are.",
-  ],study: [
+  ],
+  study: [
     "Study now, be proud later.",
     "Push yourself because no one else is going to do it for you.",
     "Dream big. Work hard. Stay focused.",
@@ -40,19 +44,13 @@ export default function QuoteForm() {
     <div className="max-w-xl mx-auto p-4 mt-10 text-center">
       <h1 className="text-3xl font-bold mb-4">Motivational Quotes Generator</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
+        <Input
           type="text"
           placeholder="Enter topic (e.g., life, success, study)"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
-          className="w-full px-4 py-2 border rounded-md shadow-sm"
         />
-        <button
-          type="submit"
-          className="bg-purple-600 text-white px-4 py-2 rounded-md"
-        >
-          Show Quotes
-        </button>
+        <Button type="submit">Show Quotes</Button>
       </form>
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
