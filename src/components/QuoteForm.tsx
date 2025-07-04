@@ -1,57 +1,71 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
-const quotes = {
-  success: [
-    "Success is not final, failure is not fatal: It is the courage to continue that counts.",
-    "Don’t watch the clock; do what it does. Keep going.",
+const quotesData: Record<string, string[]> = {
+  life: [
+    "Life is 10% what happens to us and 90% how we react to it.",
+    "The purpose of life is not to be happy. It is to be useful.",
+    "Get busy living or get busy dying.",
+  ],success: [
     "Success usually comes to those who are too busy to be looking for it.",
-  ],
-  motivation: [
-    "Push yourself, because no one else is going to do it for you.",
-    "Great things never come from comfort zones.",
-    "Dream it. Wish it. Do it.",
+    "Don’t be afraid to give up the good to go for the great.",
+    "Success is not in what you have, but who you are.",
+  ],study: [
+    "Study now, be proud later.",
+    "Push yourself because no one else is going to do it for you.",
+    "Dream big. Work hard. Stay focused.",
   ],
 };
 
 export default function QuoteForm() {
   const [topic, setTopic] = useState("");
-  const [displayQuotes, setDisplayQuotes] = useState<string[]>([]);
+  const [quotes, setQuotes] = useState<string[] | null>(null);
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const key = topic.toLowerCase();
-    if (key in quotes) {
-      setDisplayQuotes(quotes[key as keyof typeof quotes]);
+    const foundQuotes = quotesData[topic.toLowerCase()];
+
+    if (foundQuotes) {
+      setQuotes(foundQuotes);
+      setError("");
     } else {
-      setDisplayQuotes(["No quotes found for this topic. Try 'success' or 'motivation'."]);
+      setQuotes(null);
+      setError("No quotes found for that topic. Try: life, success, study.");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
-      <form onSubmit={handleSubmit} className="mb-4">
+    <div className="max-w-xl mx-auto p-4 mt-10 text-center">
+      <h1 className="text-3xl font-bold mb-4">Motivational Quotes Generator</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
+          placeholder="Enter topic (e.g., life, success, study)"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
-          placeholder="Enter a topic like success or motivation"
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full px-4 py-2 border rounded-md shadow-sm"
         />
         <button
           type="submit"
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="bg-purple-600 text-white px-4 py-2 rounded-md"
         >
-          Get Quotes
+          Show Quotes
         </button>
       </form>
 
-      <ul className="space-y-2">
-        {displayQuotes.map((quote, index) => (
-          <li key={index} className="text-gray-700">❝ {quote} ❞</li>
-        ))}
-      </ul>
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+
+      {quotes && (
+        <div className="mt-6 space-y-3">
+          {quotes.map((quote, index) => (
+            <p key={index} className="text-lg text-gray-800 font-medium">
+              “{quote}”
+            </p>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
