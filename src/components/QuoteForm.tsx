@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 const quotesData: Record<string, string[]> = {
   life: [
@@ -30,7 +28,6 @@ export default function QuoteForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const foundQuotes = quotesData[topic.toLowerCase()];
-
     if (foundQuotes) {
       setQuotes(foundQuotes);
       setError("");
@@ -42,28 +39,33 @@ export default function QuoteForm() {
 
   return (
     <div className="max-w-xl mx-auto p-4 mt-10 text-center">
-      <h1 className="text-3xl font-bold mb-4">Motivational Quotes Generator</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          type="text"
-          placeholder="Enter topic (e.g., life, success, study)"
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
-        />
-        <Button type="submit">Show Quotes</Button>
-      </form>
-
-      {error && <p className="text-red-500 mt-4">{error}</p>}
-
-      {quotes && (
-        <div className="mt-6 space-y-3">
-          {quotes.map((quote, index) => (
-            <p key={index} className="text-lg text-gray-800 font-medium">
-              “{quote}”
-            </p>
-          ))}
+      <div className="card bg-base-100 shadow-xl">
+        <div className="card-body">
+          <h1 className="text-3xl font-bold mb-4">Motivational Quotes Generator</h1>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="text"
+              placeholder="Enter topic (e.g., life, success, study)"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              className="input input-bordered w-full"
+            />
+            <button type="submit" className="btn btn-primary w-full">
+              Show Quotes
+            </button>
+          </form>
+          {error && <p className="text-red-500 mt-4">{error}</p>}
+          {quotes && (
+            <div className="mt-6 space-y-3">
+              {quotes.map((quote, index) => (
+                <p key={index} className="text-lg text-gray-800 font-medium">
+                  “{quote}”
+                </p>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
